@@ -42,6 +42,8 @@ function update()
 
 # Copying files to right locations
 success "--- Copying files ---"
+cp -v ${home}/.vim/update_bundles .old_update_bundles
+cp -v ${home}/.vimrc .old_vimrc
 cp -v update_bundles ${home}/.vim/
 cp -v vimrc ${home}/.vimrc
 success "--- Updating Plugins ---"
