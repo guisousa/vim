@@ -27,15 +27,7 @@ set sidescroll=1               "Scroll caracter por caracter"
 set title                      "seta o titulo do terminal/aba para o nome do arquivo sendo editado"
 filetype plugin on
 " configure tags - add additional tags here or comment out not-used ones
-set tags+=~/.vim/tags/cpp
-set tags+=~/.vim/tags/qt4
 let mapleader = "\<tab>"
-if exists(":Tabularize")
-    nmap <s-t>= :Tabularize /=<CR>
-    vmap <s-t>= :Tabularize /=<CR>
-    nmap <s-t>: :Tabularize /:\zs<CR>
-    vmap <s-t>: :Tabularize /:\zs<CR>
-endif
 
 " Pathogen for plugins
 call pathogen#infect()
