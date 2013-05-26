@@ -27,7 +27,8 @@ git_bundles = [
   "git://github.com/guns/xterm-color-table.vim.git",
   "git://github.com/godlygeek/tabular.git",
   "git://github.com/vim-scripts/refactor.git",
-   "git://github.com/nelstrom/vim-visual-star-search.git",
+  "git://github.com/nelstrom/vim-visual-star-search.git",
+  "git://github.com/tpope/vim-unimpaired.git"
 ]
 
 vim_org_scripts = [
