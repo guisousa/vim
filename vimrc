@@ -31,6 +31,7 @@ let mapleader = "\<tab>"
 
 " Pathogen for plugins
 call pathogen#infect()
+execute pathogen#infect('bundle.remote/{}')
 "let g:syntastic_tcl_checkers=['tclsh']
 "let colors_name = "vividchalk"
 
