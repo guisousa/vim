@@ -12,6 +12,39 @@ set shiftwidth=4               "?"
 set softtabstop=4              "tabulação de 4 espaços"
 set tabstop=4                  "tabulacao de 4 espaços"
 set cindent                    "indentação" estilo C"
+set t_Co=256                   "Use 16 colors
+set showcmd                    "mostrar comando excutado.Ex:dd"
+set sidescroll=1               "Scroll caracter por caracter"
+set title                      "seta o titulo do terminal/aba para o nome do arquivo sendo editado"
+
+" Plugin management ------------------------------------------------------------
+filetype on
+filetype off
+
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" Let Vundle manage Vundle
+Bundle 'gmarik/vundle'
+
+Bundle 'guns/xterm-color-table.vim'
+Bundle 'godlygeek/tabular'
+Bundle 'vim-scripts/refactor'
+Bundle 'nelstrom/vim-visual-star-search'
+Bundle 'tpope/vim-unimpaired'
+
+filetype plugin indent on
+ 
+" Brief help
+" :BundleList          - list configured bundles
+" :BundleInstall(!)    - install(update) bundles
+" :BundleSearch(!) foo - search(or refresh cache first) for foo
+" :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles
+"
+" see :h vundle for more details or wiki for FAQ
+" NOTE: comments after Bundle command are not allowed..
+" Plugin management - END ------------------------------------------------------
+
 if exists("&cursorline")
     set cursorline                 "destacar a linha do cursor"
 endif
@@ -21,21 +54,8 @@ if has('syntax') && (&t_Co > 2)
   filetype plugin on
   filetype indent on
 endif
-set t_Co=256                   "Use 16 colors
-set showcmd                    "mostrar comando excutado.Ex:dd"
-set sidescroll=1               "Scroll caracter por caracter"
-set title                      "seta o titulo do terminal/aba para o nome do arquivo sendo editado"
-filetype plugin on
-" configure tags - add additional tags here or comment out not-used ones
-let mapleader = "\<tab>"
 
-" Pathogen for plugins
-call pathogen#infect()
-execute pathogen#infect('bundle.remote/{}')
-"let g:syntastic_tcl_checkers=['tclsh']
-"let colors_name = "vividchalk"
-
-" Cpp Syntax Highlighting
+" Syntax Highlighting
 autocmd Filetype cpp source  ~/.vim/cpp-colors.vim
 autocmd Filetype vim source  ~/.vim/vim-colors.vim
 autocmd Filetype java source ~/.vim/java-colors.vim

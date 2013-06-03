@@ -33,56 +33,36 @@ elif [[ "$unamestr" == 'Darwin' ]]; then
 fi
 
 # Helper functions
-function uninstall()
-{
-    rm -rf ${home}/.vim/pandemic-bundles
-    rm -rf ${home}/.vim/bundle.remote
-    for b in `pandemic list | column -t | cut -d ":" -f 1`; do
-        pandemic remove $b
-    done
-}
-function install()
-{
-    pandemic add xterm-color-table.vim  git  git://github.com/guns/xterm-color-table.vim.git
-    pandemic add tabular                git  git://github.com/godlygeek/tabular.git
-    pandemic add refactor               git  git://github.com/vim-scripts/refactor.git
-    pandemic add vim-visual-star-search git  git://github.com/nelstrom/vim-visual-star-search.git
-    pandemic add vim-unimpaired         git  git://github.com/tpope/vim-unimpaired.git
-    tmp=`mktemp -u /tmp/tmp.XXXXX` && ruby -ne 'puts chomp'  ~/.vim/bundle.remote/refactor/plugin/refactor.vim > $tmp && mv $tmp ~/.vim/bundle.remote/refactor/plugin/refactor.vim
-}
 function update()
 {
-    pandemic update
-    tmp=`mktemp -u /tmp/tmp.XXXXX` && ruby -ne 'puts chomp'  ~/.vim/bundle.remote/refactor/plugin/refactor.vim > $tmp && mv $tmp ~/.vim/bundle.remote/refactor/plugin/refactor.vim
+    vim -c 'BundleInstall!'
+    tmp=`mktemp -u /tmp/tmp.XXXXX` && ruby -ne 'puts chomp'  ~/.vim/bundle/refactor/plugin/refactor.vim > $tmp && mv $tmp ~/.vim/bundle/refactor/plugin/refactor.vim
 }
 
-# Install pandemic if necessary
-pandemic=`pandemic -h 2> /dev/null 1> /dev/null;echo $?`
-if [[ "$pandemic" -ne 0 ]]; then
-    git clone git://github.com/jwcxz/vim-pandemic.git
-    sudo python setup.py install
-fi
 
 # Copying files to right locations
 success "--- Copying files ---"
 cp -v ${home}/.vimrc .old_vimrc
 cp -v vimrc ${home}/.vimrc
+mkdir -v -p ${home}/.vim
 cp -v java-colors.vim ${home}/.vim/
 cp -v cpp-colors.vim ${home}/.vim/
+cp -v vim-colors.vim ${home}/.vim/
+mkdir -v -p ${home}/.vim/after/syntax
 cp -v cpp.vim ${home}/.vim/after/syntax/
 cp -v java.vim ${home}/.vim/after/syntax/
-if [[ "$1" == "-update" ]]; then
+
+# Install Vundle if necessary
+bundle=`ls ${home}/.vim/bundle/vundle 2> /dev/null 1> /dev/null;echo $?`
+if [[ "$bundle" -ne 0 ]]; then
+    success "--- Installing Plugin Manager ---"
+    mkdir -p ${home}/.vim/bundle
+    git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+    vim -c 'BundleInstall'
+    tmp=`mktemp -u /tmp/tmp.XXXXX` && ruby -ne 'puts chomp'  ~/.vim/bundle/refactor/plugin/refactor.vim > $tmp && mv $tmp ~/.vim/bundle/refactor/plugin/refactor.vim
+else
     success "--- Updating Plugins ---"
     update
-else
-    success "--- Uninstalling Plugins ---"
-    uninstall
-    success "--- Installing Plugins ---"
-    install
-fi
-if [[ ${platform} == 'linux' ]]; then
-    scp -r ${home}/.vimrc chaiten.jda.local:
-    scp -r ${home}/.vim   chaiten.jda.local:
 fi
 success "--- Setup Done ---"
 
