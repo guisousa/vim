@@ -67,6 +67,10 @@ fi
 success "--- Copying files ---"
 cp -v ${home}/.vimrc .old_vimrc
 cp -v vimrc ${home}/.vimrc
+cp -v java-colors.vim ${home}/.vim/
+cp -v cpp-colors.vim ${home}/.vim/
+cp -v cpp.vim ${home}/.vim/after/syntax/
+cp -v java.vim ${home}/.vim/after/syntax/
 if [[ "$1" == "-update" ]]; then
     success "--- Updating Plugins ---"
     update
