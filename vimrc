@@ -230,7 +230,32 @@ function! Annotate()
 endfunction
 ca ann :call Annotate()<CR>
 
-function! Update()
-    call s:RunShellCommand("~/.vim/update_bundles")
-    call s:RunShellCommand("tmp=`mktemp -u /tmp/tmp.XXXXX` && ruby -ne 'puts chomp'  ~/.vim/bundle/refactor/plugin/refactor.vim > $tmp && mv $tmp ~/.vim/bundle/refactor/plugin/refactor.vim")
+" Refactoring
+" Depends on vim-scripts/refactor
+function! RenameVariableGuisousa()
+	let expression = escape(getreg('"'), '/\')
+    highlight RenameVariableGroup ctermfg=white cterm=standout
+	let m = matchadd("RenameVariableGroup", expression)
+    redraw
+	let name = inputdialog("Input new variable name: ")
+	if name != ""
+		call GotoBeginingBracketOfCurrentFunction()
+		let startLine = line('.')
+		exec "normal! %"
+		let stopLine = line('.')
+		call GotoBeginingBracketOfCurrentFunction()
+        exec "/" . expression
+		let firstLine = line('.')
+		exec startLine . ',' . stopLine . ':s/\<' . expression . '\>/'. name .'/g'	
+        exec ":" . firstLine
+        exec "normal O a"
+        let targetRow = line('.')
+        let targetCol = (col('.')-1)
+        exec "normal dd"
+        exec "normal O" . name . " = " . expression . ";" 
+	endif
+	call matchdelete(m)
+	call cursor(targetRow, targetCol)
 endfunction
+
+noremap <c-e> y:call RenameVariableGuisousa()<cr>
