@@ -1,4 +1,4 @@
-syn keyword cppCustomQtTypes   QList QString QVector QMap QStringList
+syn keyword cppCustomQtTypes   QList QString QVector QMap QStringList QStack
 syn keyword cppCustomQtDebug   qDebug
 
 syn match   cppCustomOp           "\(+\|-\|\*\|\/\(\/\|\*\)\@!\||\|?\|:\|=\|&\|!\|>\|<\)" contains=cppCustomScope
