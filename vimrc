@@ -32,6 +32,7 @@ Bundle 'godlygeek/tabular'
 Bundle 'vim-scripts/refactor'
 Bundle 'nelstrom/vim-visual-star-search'
 Bundle 'tpope/vim-unimpaired'
+Bundle 'terryma/vim-multiple-cursors'
 
 filetype plugin indent on
  
