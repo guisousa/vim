@@ -33,6 +33,7 @@ Bundle 'vim-scripts/refactor'
 Bundle 'nelstrom/vim-visual-star-search'
 Bundle 'tpope/vim-unimpaired'
 Bundle 'terryma/vim-multiple-cursors'
+"Bundle 'Rip-Rip/clang_complete'
 
 filetype plugin indent on
  
