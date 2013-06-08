@@ -247,16 +247,27 @@ function! RenameVariableGuisousa()
 		call GotoBeginingBracketOfCurrentFunction()
         exec "/" . expression
 		let firstLine = line('.')
-		exec startLine . ',' . stopLine . ':s/\<' . expression . '\>/'. name .'/g'	
+		exec startLine . ',' . stopLine . ':s/\V\C' . expression . '/'. name .'/g'	
         exec ":" . firstLine
-        exec "normal O a"
-        let targetRow = line('.')
-        let targetCol = (col('.')-1)
-        exec "normal dd"
-        exec "normal O" . name . " = " . expression . ";" 
+        exec "normal O" . name . " = "
+        normal p
+        normal A; 
+        normal 0w
 	endif
 	call matchdelete(m)
-	call cursor(targetRow, targetCol)
+endfunction
+
+" Depends on terryma/vim-multiple-cursors
+function! RenameVariableGuisousa2()
+    let origLine = line('.')
+	let expression = escape(getreg('"'), '/\')
+    call GotoBeginingBracketOfCurrentFunction()
+    let startLine = line('.')
+    exec "normal! %"
+    let stopLine = line('.')
+    exec ":" . origLine
+    call multiple_cursors#find(startLine, stopLine, expression)
 endfunction
 
 noremap <c-e> y:call RenameVariableGuisousa()<cr>
+noremap <c-f> y:call RenameVariableGuisousa2()<cr>
