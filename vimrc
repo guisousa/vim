@@ -33,7 +33,8 @@ Bundle 'vim-scripts/refactor'
 Bundle 'nelstrom/vim-visual-star-search'
 Bundle 'tpope/vim-unimpaired'
 Bundle 'terryma/vim-multiple-cursors'
-"Bundle 'Rip-Rip/clang_complete'
+Bundle 'Rip-Rip/clang_complete'
+Bundle 'Shougo/unite.vim'
 
 filetype plugin indent on
  
@@ -76,6 +77,40 @@ map <C-F12> :!ctags -R --sort=yes --c++-kinds=+p1 --fields=+iaS --extra=+q .<CR>
 "nmap <C-f> :let @/="<C-r><C-w>"<CR>
 " Limpar buffer de busca"
 nmap <s-f> :silent :nohlsearch<CR>
+
+
+" Unite Configuration
+call unite#custom#source('buffer,file,file_mru,file_rec', 'matchers', 'matcher_fuzzy')
+call unite#custom#source('buffer,file,file_mru,file_rec', 'sorters', 'sorter_rank')
+call unite#custom#source('file_rec,file', 'ignore_pattern', '.(orig|.rej)')
+call unite#custom#default_action('file,file_rec,file_mru', 'tabopen')
+call unite#custom#default_action('buffer', 'goto')
+let g:unite_source_history_yank_enable = 1
+let g:unite_source_file_mru_limit = 10
+let g:unite_source_file_mru_long_limit = 100
+
+nmap <c-f> :Unite file_mru file_rec -start-insert -buffer-name='files'<CR>
+nmap <c-h> :Unite history/yank<CR>
+nmap <c-b> :Unite buffer<CR>
+"nmap <c-c> :Unite output -buffer-name='command'<CR>
+nmap <c-c> :Unite process -buffer-name='processes'<CR>
+
+"source /Users/guisousa/repos/vim/unite/kinds/annotate.vim
+"source /Users/guisousa/repos/vim/unite/sources/annotate.vim
+"nmap <c-a> call UniteAnnotate()
+"function! UniteAnnotate()
+"    let ln = line(".")-1
+"    execute "Unite annotate -select=" . ln
+"endfunction
+
+" Ideas
+" - Use :Unite command to output shell command output
+" - Use :Unite line/fast to display the lines of an annotate, then do
+"   something to display the log
+" - I got an error with :Unite undo. Try again.
+" - Create a unite source with my favorite commands, then set the default
+"   action to be ex, then I can execute the command.
+" END - Unite Configuration
 
 :function! GetHeaderOrSource()
 :   let fname = expand("%")
@@ -271,4 +306,4 @@ function! RenameVariableGuisousa2()
 endfunction
 
 noremap <c-e> y:call RenameVariableGuisousa()<cr>
-noremap <c-f> y:call RenameVariableGuisousa2()<cr>
+"noremap <c-f> y:call RenameVariableGuisousa2()<cr>
