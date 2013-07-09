@@ -16,6 +16,7 @@ set t_Co=256                   "Use 16 colors
 set showcmd                    "mostrar comando excutado.Ex:dd"
 set sidescroll=1               "Scroll caracter por caracter"
 set title                      "seta o titulo do terminal/aba para o nome do arquivo sendo editado"
+set backspace=indent,eol,start "Faz com que o backspace possa apagar coisas que nao foram escritas no ultimo insert
 
 " Plugin management ------------------------------------------------------------
 filetype on
