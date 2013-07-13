@@ -1,5 +1,6 @@
 syn keyword cppCustomQtTypes   QList QString QVector QMap QStringList QStack
 syn keyword cppCustomQtDebug   qDebug
+syn keyword cppCustomRepeat    foreach
 
 syn match   cppCustomOp           "\(+\|-\|\*\|\/\(\/\|\*\)\@!\||\|?\|:\|=\|&\|!\|>\|<\)" contains=cppCustomScope
 syn match   cppCustomOp2          "\((\|)\|\.\|->\|,\)" contains=cppCustomScope
@@ -17,6 +18,7 @@ syn match   cppCustomGlobal       "m_\w\+"
 "hi def link cppCustomFunc       Function
 hi def link cppCustomClassFunc  Function
 hi def link cppCustomQtTypes    Type
+hi def link cppCustomRepeat     Repeat
 
 " Custom syntax definitions
 hi def link cppCustomClass         CppClassNamespace

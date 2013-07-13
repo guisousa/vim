@@ -19,6 +19,7 @@ set title                      "seta o titulo do terminal/aba para o nome do arq
 set backspace=indent,eol,start "Faz com que o backspace possa apagar coisas que nao foram escritas no ultimo insert
 set splitright                 "Novo split aparece a direita
 set splitbelow                 "Novo split aparece abaixo
+set background=dark
 
 " Plugin management ------------------------------------------------------------
 filetype on
@@ -32,11 +33,9 @@ Bundle 'gmarik/vundle'
 
 Bundle 'guns/xterm-color-table.vim'
 Bundle 'godlygeek/tabular'
-Bundle 'vim-scripts/refactor'
 Bundle 'nelstrom/vim-visual-star-search'
 Bundle 'tpope/vim-unimpaired'
 Bundle 'terryma/vim-multiple-cursors'
-Bundle 'Rip-Rip/clang_complete'
 Bundle 'Shougo/unite.vim'
 
 filetype plugin indent on
@@ -85,7 +84,10 @@ nmap <s-f> :silent :nohlsearch<CR>
 " Unite Configuration
 call unite#custom#source('buffer,file,file_mru,file_rec', 'matchers', 'matcher_fuzzy')
 call unite#custom#source('buffer,file,file_mru,file_rec', 'sorters', 'sorter_rank')
-call unite#custom#source('file_rec,file', 'ignore_pattern', '.(orig|.rej)')
+call unite#custom#source('file_rec', 'ignore_pattern', 
+      \'\%(^\|/\)\.$\|\~$\|\.\%(o\|exe\|dll\|bak\|DS_Store\|zwc\|pyc\|sw[po]\|class\)$'.
+      \'\|\%(^\|/\)\%(\.hg\|\.git\|\.bzr\|\.svn\|tags\%(-.*\)\?\)\%($\|/\)'.
+      \'\|\.orig\|\.rej')
 call unite#custom#default_action('file,file_rec,file_mru', 'tabopen')
 call unite#custom#default_action('buffer', 'goto')
 let g:unite_source_history_yank_enable = 1
@@ -176,7 +178,7 @@ imap [ []<left>
 nnoremap Y y$
 
 " \K faz man da palavra sob o cursor
-runtime ftplugin/man.vim
+"runtime ftplugin/man.vim
 
 " Para aliases funcionarem
 set shell=/bin/bash\ -l
@@ -197,7 +199,7 @@ vnoremap > >gv
 inoremap jj <Esc>
 
 " automatically reload vimrc when it's saved
-au BufWritePost .vimrc so ~/.vimrc
+"au BufWritePost .vimrc so ~/.vimrc
 
 " ex mode commands made easy
 nnoremap ; :
