@@ -20,6 +20,9 @@ set backspace=indent,eol,start "Faz com que o backspace possa apagar coisas que 
 set splitright                 "Novo split aparece a direita
 set splitbelow                 "Novo split aparece abaixo
 set background=dark
+set wildmenu                   "Apresenta lista de opcoes na linha de comando
+set wildignore=*.o,moc_*,Makefile,*.rej,*.orig
+set lazyredraw                 "Nao atualiza enquanto roda macros
 
 " Plugin management ------------------------------------------------------------
 filetype on
@@ -33,6 +36,7 @@ Bundle 'gmarik/vundle'
 
 Bundle 'guns/xterm-color-table.vim'
 Bundle 'godlygeek/tabular'
+"Bundle 'vim-scripts/refactor'
 Bundle 'nelstrom/vim-visual-star-search'
 Bundle 'tpope/vim-unimpaired'
 Bundle 'terryma/vim-multiple-cursors'
@@ -117,43 +121,41 @@ nmap <c-c> :Unite process -buffer-name='processes'<CR>
 "   action to be ex, then I can execute the command.
 " END - Unite Configuration
 
-:function! GetHeaderOrSource()
+:function! GetOposite()
 :   let fname = expand("%")
 :        echo fname
+:   let other = ""
 :   if fnamemodify(fname, ":e") == "cpp"
-:       exec("tabe " .substitute(fname, ".cpp",".h", ""))
+:       let other = substitute(fname, ".cpp",".h", "")
+:   endif
+:   if fnamemodify(fname, ":e") == "cc"
+:       let other = substitute(fname, ".cc",".h", "")
 :   endif
 :   if fnamemodify(fname, ":e") == "h"
-:       exec("tabe " .substitute(fname, ".h",".cpp", ""))
+:       let other = substitute(fname, ".h",".cpp", "")
+:       if filereadable(other)
+:           " Found!!!
+:       else
+:           let other = substitute(fname, ".h",".cc", "")
+:       endif
 :   endif
-:endfunction
-
-nmap <s-h> :call GetHeaderOrSource()<CR>
-
-:function! GetHeaderOrSourceToSplit()
-:   let fname = expand("%")
-:        echo fname
-:   if fnamemodify(fname, ":e") == "cpp"
-:       exec("vsplit " .substitute(fname, ".cpp",".h", ""))
-:   endif
-:   if fnamemodify(fname, ":e") == "h"
-:       exec("vsplit " .substitute(fname, ".h",".cpp", ""))
-:   endif
-:endfunction
-
-nmap <s-j> :call GetHeaderOrSourceToSplit()<CR>
-
-:function! GetRejectedOrOrignal()
-:   let fname = expand("%")
-:        echo fname
 :   if fnamemodify(fname, ":e") == "rej"
-:       exec("tabe " .substitute(fname, ".rej","", ""))
-:   else
-:       exec("tabe " . fname . ".rej")
+:       let other = substitute(fname, ".rej","", "")
 :   endif
+:   return other
 :endfunction
 
-nmap <s-r> :call GetRejectedOrOrignal()<CR>
+:function! TabeOposite()
+:   let fname = GetOposite()
+:   exec("tabe " . fname)
+:endfunction
+nmap <s-t> :call TabeOposite()<CR>
+
+:function! SplitOposite()
+:   let fname = GetOposite()
+:   exec("vsplit " . fname)
+:endfunction
+nmap <s-s> :call SplitOposite()<CR>
 
 " Paste with correct indentation
 nmap <C-p> :p=`[<CR>
