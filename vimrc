@@ -79,8 +79,6 @@ autocmd Filetype tex nnoremap <Down> gj
 " build tags of your own project with Ctrl-F12
 map <C-F12> :!ctags -R --sort=yes --c++-kinds=+p1 --fields=+iaS --extra=+q .<CR>
 
-" Destacar palavra sob o cursor -> * e # fazem a mesma coisa
-"nmap <C-f> :let @/="<C-r><C-w>"<CR>
 " Limpar buffer de busca"
 nmap <s-f> :silent :nohlsearch<CR>
 
@@ -221,9 +219,10 @@ set iskeyword-=\.
 set iskeyword-=\(
 set iskeyword-=\)
 
-nnoremap <C-d> :put ='qDebug() << '.'\"'.expand('%.:p').':'.(line('.')+1).'\";'<CR>
-nnoremap <C-j> :put ='System.out.println(\"'.expand('%.:p').':'.(line('.')+1).'\");'<CR>
-nnoremap <s-j> :put ='puts {'.expand('%.:p').':'.(line('.')+1).'}'<CR>
+" Put debug line bellow cursor
+nnoremap <C-d> append(line('$'), 'qDebug() << '.'\"'.expand('%.:p').':'.(line('.')+1).'\";')
+nnoremap <C-j> append(line('$'), 'System.out.println(\"'.expand('%.:p').':'.(line('.')+1).'\");')
+nnoremap <s-j> append(line('$'), 'puts {'.expand('%.:p').':'.(line('.')+1).'}')
 
 if has("cscope")
     "see more at http://cscope.sourceforge.net/cscope_maps.vim
@@ -243,8 +242,8 @@ endif
 
 " Executar comandos do shell com :Shell e mostrar resultados em novo buffer
 "http://vim.wikia.com/wiki/Display_output_of_shell_commands_in_new_window
-command! -complete=shellcmd -nargs=+ Shell call s:RunShellCommand(<q-args>)
-function! s:RunShellCommand(cmdline)
+command! -complete=shellcmd -nargs=+ Shell call RunShellCommand(<q-args>)
+function! RunShellCommand(cmdline)
   echo a:cmdline
   let expanded_cmdline = a:cmdline
   for part in split(a:cmdline, ' ')
@@ -268,7 +267,7 @@ function! Annotate()
     let ln = line(".")+1
     let filename = expand("%")
     let filetype = &ft
-    call s:RunShellCommand('hg annotate '.filename)
+    call RunShellCommand('hg annotate '.filename)
     execute 'silent '.ln
     execute 'set filetype='.filetype
 endfunction

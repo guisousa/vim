@@ -51,6 +51,8 @@ cp -v vim-colors.vim ${home}/.vim/
 mkdir -v -p ${home}/.vim/after/syntax
 cp -v cpp.vim ${home}/.vim/after/syntax/
 cp -v java.vim ${home}/.vim/after/syntax/
+cp -v unite/sources/annotate.vim ${home}/.vim/bundle/unite.vim/autoload/unite/sources/
+cp -v unite/kinds/annotate.vim ${home}/.vim/bundle/unite.vim/autoload/unite/kinds/
 
 # Install Vundle if necessary
 bundle=`ls ${home}/.vim/bundle/vundle 2> /dev/null 1> /dev/null;echo $?`
