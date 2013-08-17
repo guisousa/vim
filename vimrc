@@ -45,7 +45,7 @@ set nowrap                     "sem wrap
 set shiftwidth=4               "?
 set softtabstop=4              "tabulação de 4 espaços
 set tabstop=4                  "tabulacao de 4 espaços
-set cindent                    "indentação" estilo C
+set cindent                    "C style indentation
 set t_Co=256                   "Use 16 colors
 set showcmd                    "mostrar comando excutado.Ex:dd
 set sidescroll=1               "Scroll caracter por caracter
@@ -53,9 +53,9 @@ set title                      "seta o titulo do terminal/aba para o nome do arq
 set backspace=indent,eol,start "Faz com que o backspace possa apagar coisas que nao foram escritas no ultimo insert
 set splitright                 "Novo split aparece a direita
 set splitbelow                 "Novo split aparece abaixo
-set background=dark
+set background=dark            "We will use a dark background
 set wildmenu                   "Apresenta lista de opcoes na linha de comando
-set wildignore=*.o,moc_*,Makefile,*.rej,*.orig
+set wildignore=*.o,moc_*,Makefile,*.rej,*.orig "Ignore files terminated with this
 set lazyredraw                 "Nao atualiza enquanto roda macros
 set mouse=a                    "Adiciona suporte a mouse (move o cursor ao clicar)
 set shell=/bin/bash\ -l        "Para aliases funcionarem
