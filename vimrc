@@ -1,4 +1,38 @@
+" No compatibility
 set nocp                       "MAIS IMPORTANTE DE TUDO: FORA DO MODO DE COMPATIBILIDADE!!! SEMPRE USAR!!!"
+
+" Plugin management ------------------------------------------------------------
+filetype off
+
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" Let Vundle manage Vundle
+Bundle 'gmarik/vundle'
+
+Bundle 'guns/xterm-color-table.vim'
+Bundle 'godlygeek/tabular'
+"Bundle 'vim-scripts/refactor'
+Bundle 'nelstrom/vim-visual-star-search'
+Bundle 'tpope/vim-unimpaired'
+Bundle 'terryma/vim-multiple-cursors'
+Bundle 'Shougo/unite.vim'
+Bundle 'scrooloose/syntastic'
+Bundle 'dbakker/vim-lint'
+
+filetype plugin indent on
+ 
+" Brief help
+" :BundleList          - list configured bundles
+" :BundleInstall(!)    - install(update) bundles
+" :BundleSearch(!) foo - search(or refresh cache first) for foo
+" :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles
+"
+" see :h vundle for more details or wiki for FAQ
+" NOTE: comments after Bundle command are not allowed..
+" Plugin management - END ------------------------------------------------------
+
+" Vim Configuration ------------------------------------------------------------
 set incsearch                  "busca incremental"
 set hlsearch                   "highlight da busca"
 set nostartofline              "deixa o cursor no lugar"
@@ -23,36 +57,13 @@ set background=dark
 set wildmenu                   "Apresenta lista de opcoes na linha de comando
 set wildignore=*.o,moc_*,Makefile,*.rej,*.orig
 set lazyredraw                 "Nao atualiza enquanto roda macros
-
-" Plugin management ------------------------------------------------------------
-filetype on
-filetype off
-
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
-
-" Let Vundle manage Vundle
-Bundle 'gmarik/vundle'
-
-Bundle 'guns/xterm-color-table.vim'
-Bundle 'godlygeek/tabular'
-"Bundle 'vim-scripts/refactor'
-Bundle 'nelstrom/vim-visual-star-search'
-Bundle 'tpope/vim-unimpaired'
-Bundle 'terryma/vim-multiple-cursors'
-Bundle 'Shougo/unite.vim'
-
-filetype plugin indent on
- 
-" Brief help
-" :BundleList          - list configured bundles
-" :BundleInstall(!)    - install(update) bundles
-" :BundleSearch(!) foo - search(or refresh cache first) for foo
-" :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles
-"
-" see :h vundle for more details or wiki for FAQ
-" NOTE: comments after Bundle command are not allowed..
-" Plugin management - END ------------------------------------------------------
+set mouse=a                    "Adiciona suporte a mouse (move o cursor ao clicar)
+set shell=/bin/bash\ -l        "Para aliases funcionarem
+set iskeyword-=\.              "New delimiter
+set iskeyword-=\(              "New delimiter
+set iskeyword-=\)              "New delimiter
+set iskeyword-=\_              "New delimiter
+let mapleader = ","            "Remapping leader key
 
 if exists("&cursorline")
     set cursorline                 "destacar a linha do cursor"
@@ -64,6 +75,16 @@ if has('syntax') && (&t_Co > 2)
   filetype indent on
 endif
 
+if has("cscope")
+    "see more at http://cscope.sourceforge.net/cscope_maps.vim
+    set cscopetag "use cscope and ctags for ctrl-], :ta and vim -t
+    set csto=0     "try to use cscope first
+    set nocscopeverbose
+    let db = system("pwd|cut -d '/' --fields=1,2,3,4")."/cscope.out"
+    let db = substitute(db, "\n", "", "")
+    exec 'cs add '.db
+endif
+
 " Syntax Highlighting
 autocmd Filetype cpp source  ~/.vim/cpp-colors.vim
 autocmd Filetype vim source  ~/.vim/vim-colors.vim
@@ -71,19 +92,9 @@ autocmd Filetype java source ~/.vim/java-colors.vim
 
 " Indentacao para arquivos haskell
 autocmd Filetype haskell set tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+" END - Vim Configuration ------------------------------------------------------
 
-" Navegar linhas visiveis
-autocmd Filetype tex nnoremap <Up> gk
-autocmd Filetype tex nnoremap <Down> gj
-
-" build tags of your own project with Ctrl-F12
-map <C-F12> :!ctags -R --sort=yes --c++-kinds=+p1 --fields=+iaS --extra=+q .<CR>
-
-" Limpar buffer de busca"
-nmap <s-f> :silent :nohlsearch<CR>
-
-
-" Unite Configuration
+" Unite Configuration ----------------------------------------------------------
 call unite#custom#source('buffer,file,file_mru,file_rec', 'matchers', 'matcher_fuzzy')
 call unite#custom#source('buffer,file,file_mru,file_rec', 'sorters', 'sorter_rank')
 call unite#custom#source('file_rec', 'ignore_pattern', 
@@ -95,116 +106,53 @@ call unite#custom#default_action('buffer', 'goto')
 let g:unite_source_history_yank_enable = 1
 let g:unite_source_file_mru_limit = 10
 let g:unite_source_file_mru_long_limit = 100
+" END - Unite Configuration ---------------------------------------------------
 
-nmap <c-f> :Unite file_mru file_rec -start-insert -buffer-name='files'<CR>
-nmap <c-h> :Unite history/yank<CR>
-nmap <c-b> :Unite buffer<CR>
-"nmap <c-c> :Unite output -buffer-name='command'<CR>
-nmap <c-c> :Unite process -buffer-name='processes'<CR>
+" Syntastic Configuration------------------------------------------------------
+let g:syntastic_mode_map = { 'mode': 'passive',
+                           \ 'active_filetypes': ['vim','sh','tcl','tex'],
+                           \ 'passive_filetypes': [] }
+let g:syntastic_cpp_check_header = 1
+let b:syntastic_cpp_cflags = ' -Icommon/include/util -Icommon/include/gui '   .
+                            \' -Icommon/include/license -Icommon/include/io ' .
+                            \'-I../../qt-include/Qt -I../../qt-include/QtGui'
+" END - Syntastic Configuration ------------------------------------------------
 
-"source /Users/guisousa/repos/vim/unite/kinds/annotate.vim
-"source /Users/guisousa/repos/vim/unite/sources/annotate.vim
-"nmap <c-a> call UniteAnnotate()
-"function! UniteAnnotate()
-"    let ln = line(".")-1
-"    execute "Unite annotate -select=" . ln
-"endfunction
-
-" Ideas
-" - Use :Unite command to output shell command output
-" - Use :Unite line/fast to display the lines of an annotate, then do
-"   something to display the log
-" - I got an error with :Unite undo. Try again.
-" - Create a unite source with my favorite commands, then set the default
-"   action to be ex, then I can execute the command.
-" END - Unite Configuration
-
-:function! GetOposite()
-:   let fname = expand("%")
-:        echo fname
-:   let other = ""
-:   if fnamemodify(fname, ":e") == "cpp"
-:       let other = substitute(fname, ".cpp",".h", "")
-:   endif
-:   if fnamemodify(fname, ":e") == "cc"
-:       let other = substitute(fname, ".cc",".h", "")
-:   endif
-:   if fnamemodify(fname, ":e") == "h"
-:       let other = substitute(fname, ".h",".cpp", "")
-:       if filereadable(other)
-:           " Found!!!
-:       else
-:           let other = substitute(fname, ".h",".cc", "")
-:       endif
-:   endif
-:   if fnamemodify(fname, ":e") == "rej"
-:       let other = substitute(fname, ".rej","", "")
-:   endif
-:   return other
-:endfunction
-
-:function! TabeOposite()
-:   let fname = GetOposite()
-:   exec("tabe " . fname)
-:endfunction
-nmap <s-t> :call TabeOposite()<CR>
-
-:function! SplitOposite()
-:   let fname = GetOposite()
-:   exec("vsplit " . fname)
-:endfunction
-nmap <s-s> :call SplitOposite()<CR>
-
-" Paste with correct indentation
-nmap <C-p> :p=`[<CR>
-
-" para poupar keystrokes
-nmap ; :
-
-" Abreviations
-ab qdeb qDebug() << ;<Del><Left>
-ab qDeb qDebug() << ;<Del><Left>
-ab qdebug qDebug() << ;<Del><Left>
-ab qDebug qDebug() << ;<Del><Left>
-ab qdebug() qDebug() << ;<Del><Left>
-ab qDebug() qDebug() << ;<Del><Left>
-
-" Fechamento automático de parênteses e afins"
-imap { {}<left>
-imap ( ()<left>
-imap [ []<left>
-
-" Y fica similar a C e D
-nnoremap Y y$
-
-" \K faz man da palavra sob o cursor
-"runtime ftplugin/man.vim
-
-" Para aliases funcionarem
-set shell=/bin/bash\ -l
-nmap <f5> :call CompileLatex()<CR><CR>
-
-function! CompileLatex()
-    execute ":wa"
-    execute ":!compileLatex ".expand("%")
+" Functions -------------------------------------------------------------------
+function! GetOposite()
+   let fname = expand("%")
+        echo fname
+   let other = ""
+   if fnamemodify(fname, ":e") == "cpp"
+       let other = substitute(fname, ".cpp",".h", "")
+   endif
+   if fnamemodify(fname, ":e") == "cc"
+       let other = substitute(fname, ".cc",".h", "")
+   endif
+   if fnamemodify(fname, ":e") == "h"
+       let other = substitute(fname, ".h",".cpp", "")
+       if filereadable(other)
+           " Found!!!
+       else
+           let other = substitute(fname, ".h",".cc", "")
+       endif
+   endif
+   if fnamemodify(fname, ":e") == "rej"
+       let other = substitute(fname, ".rej","", "")
+   endif
+   return other
 endfunction
-command! -nargs=1 C
-            \ | execute ':silent !'.<q-args>
-            \ | execute ':redraw!'
 
-" Selecionar bloco novamente depois de indentar
-vnoremap < <gv
-vnoremap > >gv
+function! TabeOposite()
+   let fname = GetOposite()
+   exec("tabe " . fname)
+endfunction
 
-inoremap jj <Esc>
+function! SplitOposite()
+   let fname = GetOposite()
+   exec("vsplit " . fname)
+endfunction
 
-" automatically reload vimrc when it's saved
-"au BufWritePost .vimrc so ~/.vimrc
-
-" ex mode commands made easy
-nnoremap ; :
-
-" usar tab para autocompletar
 function! SuperTab()
     if (strpart(getline('.'),col('.')-2,1)=~'^\W\?$')
         return "\<Tab>"
@@ -212,33 +160,6 @@ function! SuperTab()
         return "\<C-n>"
     endif
 endfunction
-imap <Tab> <C-R>=SuperTab()<CR>
-
-" usar  . e ( e ) como delimitadores
-set iskeyword-=\.
-set iskeyword-=\(
-set iskeyword-=\)
-
-" Put debug line bellow cursor
-nnoremap <C-d> append(line('$'), 'qDebug() << '.'\"'.expand('%.:p').':'.(line('.')+1).'\";')
-nnoremap <C-j> append(line('$'), 'System.out.println(\"'.expand('%.:p').':'.(line('.')+1).'\");')
-nnoremap <s-j> append(line('$'), 'puts {'.expand('%.:p').':'.(line('.')+1).'}')
-
-if has("cscope")
-    "see more at http://cscope.sourceforge.net/cscope_maps.vim
-    set cscopetag "use cscope and ctags for ctrl-], :ta and vim -t
-    set csto=0     "try to use cscope first
-    set nocscopeverbose
-    let db = system("pwd|cut -d '/' --fields=1,2,3,4")."/cscope.out"
-    let db = substitute(db, "\n", "", "")
-    exec 'cs add '.db
-
-    "mappings
-"    nmap <C-G> :cs find g <C-R>=expand("<cword>")<CR><CR>
-    nmap <Tab> :vert scs find g <C-R>=expand("<cword>")<CR><CR>
-"    nmap <C-S> :cs find s <C-R>=expand("<cword>")<CR><CR>
-"    nmap <C-S>s :vert scs find s <C-R>=expand("<cword>")<CR><CR>
-endif
 
 " Executar comandos do shell com :Shell e mostrar resultados em novo buffer
 "http://vim.wikia.com/wiki/Display_output_of_shell_commands_in_new_window
@@ -262,7 +183,6 @@ function! RunShellCommand(cmdline)
   1
 endfunction
 
-
 function! Annotate()
     let ln = line(".")+1
     let filename = expand("%")
@@ -274,19 +194,18 @@ endfunction
 ca ann :call Annotate()<CR>
 
 " Refactoring
-" Depends on vim-scripts/refactor
-function! RenameVariableGuisousa()
+function! ExtractVariable()
 	let expression = escape(getreg('"'), '/\')
     highlight RenameVariableGroup ctermfg=white cterm=standout
 	let m = matchadd("RenameVariableGroup", expression)
     redraw
 	let name = inputdialog("Input new variable name: ")
 	if name != ""
-		call GotoBeginingBracketOfCurrentFunction()
+        exec "normal! [["
 		let startLine = line('.')
 		exec "normal! %"
 		let stopLine = line('.')
-		call GotoBeginingBracketOfCurrentFunction()
+		exec "normal! %"
         exec "/" . expression
 		let firstLine = line('.')
 		exec startLine . ',' . stopLine . ':s/\V\C' . expression . '/'. name .'/g'	
@@ -300,16 +219,75 @@ function! RenameVariableGuisousa()
 endfunction
 
 " Depends on terryma/vim-multiple-cursors
-function! RenameVariableGuisousa2()
+function! RenameVariable()
     let origLine = line('.')
 	let expression = escape(getreg('"'), '/\')
-    call GotoBeginingBracketOfCurrentFunction()
+    exec "normal! [["
     let startLine = line('.')
     exec "normal! %"
     let stopLine = line('.')
+    exec "normal! %"
     exec ":" . origLine
     call multiple_cursors#find(startLine, stopLine, expression)
 endfunction
 
-noremap <c-e> y:call RenameVariableGuisousa()<cr>
-"noremap <c-f> y:call RenameVariableGuisousa2()<cr>
+function! CommentLine()
+    exec "normal A" . " "
+    while col('.') < 80
+        exec "normal A" . "-"
+    endwhile
+endfunction
+
+"See differences from original file (resets if file is saved)
+command! DiffOrig let g:diffline = line('.') | vert new | set bt=nofile | r # | 0d_ | diffthis
+              \ | wincmd p | diffthis | wincmd p
+" Mappings --------------------------------------------------------------------
+
+" Simple navigation/control
+nmap ; :
+inoremap jj <Esc>
+nnoremap <Up> gk
+nnoremap <Down> gj
+" Selecionar bloco novamente depois de indentar
+xnoremap < <gv
+xnoremap > >gv
+" Auto Completion
+imap <Tab> <C-R>=SuperTab()<CR>
+" Opening oposite file
+nmap <s-t> :call TabeOposite()<CR>
+nmap <s-s> :call SplitOposite()<CR>
+" Paste with correct indentation
+nmap <C-p> "+p`]a
+" Fechamento automático de parênteses e afins"
+imap { {}<left>
+imap ( ()<left>
+imap [ []<left>
+" Y fica similar a C e D
+nnoremap Y y$
+" Limpar buffer de busca com Enter
+nmap <CR> :silent :nohlsearch<CR>
+" Refactoring
+noremap <Leader>ev y:call ExtractVariable()<cr>
+noremap <Leader>rv y:call RenameVariable()<cr>
+" Debug
+nnoremap <C-d> append(line('$'), 'qDebug() << '.'\"'.expand('%.:p').':'.(line('.')+1).'\";')
+nnoremap <C-j> append(line('$'), 'System.out.println(\"'.expand('%.:p').':'.(line('.')+1).'\");')
+nnoremap <s-j> append(line('$'), 'puts {'.expand('%.:p').':'.(line('.')+1).'}')
+" Unite
+nmap <c-f> :Unite file_mru file_rec -start-insert -buffer-name='files'<CR>
+nmap <c-h> :Unite history/yank<CR>
+nmap <c-b> :Unite buffer<CR>
+nmap <c-c> :w!:SyntasticReset<CR>:SyntasticCheck<CR>
+" Diff current file against last save
+nnoremap <Leader>do :DiffOrig<cr>
+nnoremap <leader>dc :q<cr>:diffoff<cr>:exe ":" . g:diffline<cr>
+" Easy comments
+nnoremap <Leader>l :call CommentLine()<cr>
+
+" Abreviations ----------------------------------------------------------------
+ab qdeb qDebug() << ;<Del><Left>
+ab qDeb qDebug() << ;<Del><Left>
+ab qdebug qDebug() << ;<Del><Left>
+ab qDebug qDebug() << ;<Del><Left>
+ab qdebug() qDebug() << ;<Del><Left>
+ab qDebug() qDebug() << ;<Del><Left>
