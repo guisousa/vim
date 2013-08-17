@@ -82,6 +82,10 @@ if has("cscope")
     exec 'cs add '.db
 endif
 
+" Move to last position when reopening a file
+autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$")
+                   \| exe "normal! g`\"" | endif
+
 " Syntax Highlighting
 autocmd Filetype cpp source  ~/.vim/cpp-colors.vim
 autocmd Filetype vim source  ~/.vim/vim-colors.vim
