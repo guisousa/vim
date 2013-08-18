@@ -292,3 +292,5 @@ ab qdebug qDebug() << ;<Del><Left>
 ab qDebug qDebug() << ;<Del><Left>
 ab qdebug() qDebug() << ;<Del><Left>
 ab qDebug() qDebug() << ;<Del><Left>
+
+let g:unite_sources_ssh = "ssh ..."
