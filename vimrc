@@ -19,6 +19,7 @@ Bundle 'terryma/vim-multiple-cursors'
 Bundle 'Shougo/unite.vim'
 Bundle 'scrooloose/syntastic'
 Bundle 'dbakker/vim-lint'
+Bundle 'guisousa/annotate'
 
 filetype plugin indent on
  
