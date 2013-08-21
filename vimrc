@@ -94,6 +94,9 @@ autocmd Filetype java source ~/.vim/java-colors.vim
 
 " Indentacao para arquivos haskell
 autocmd Filetype haskell set tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+
+" makefiles retain tabs (adding to your autocommand group)
+autocmd filetype make setlocal ts=4 sts=4 sw=4 noexpandtab)
 " END - Vim Configuration ------------------------------------------------------
 
 " Unite Configuration ----------------------------------------------------------
