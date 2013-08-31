@@ -97,13 +97,13 @@ autocmd Filetype haskell set tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 " END - Vim Configuration ------------------------------------------------------
 
 " Unite Configuration ----------------------------------------------------------
-call unite#custom#source('buffer,file,file_mru,file_rec', 'matchers', 'matcher_fuzzy')
-call unite#custom#source('buffer,file,file_mru,file_rec', 'sorters', 'sorter_rank')
-call unite#custom#source('file_rec', 'ignore_pattern', 
+call unite#custom#source('buffer,file,file_mru,file_rec,file_fixed', 'matchers', 'matcher_fuzzy')
+call unite#custom#source('buffer,file,file_mru,file_rec,file_fixed', 'sorters', 'sorter_rank')
+call unite#custom#source('file_rec,file_fixed', 'ignore_pattern', 
       \'\%(^\|/\)\.$\|\~$\|\.\%(o\|exe\|dll\|bak\|DS_Store\|zwc\|pyc\|sw[po]\|class\)$'.
       \'\|\%(^\|/\)\%(\.hg\|\.git\|\.bzr\|\.svn\|tags\%(-.*\)\?\)\%($\|/\)'.
       \'\|\.orig\|\.rej')
-call unite#custom#default_action('file,file_rec,file_mru', 'tabopen')
+call unite#custom#default_action('file,file_rec,file_mru,file_fixed', 'tabopen')
 call unite#custom#default_action('buffer', 'goto')
 let g:unite_source_history_yank_enable = 1
 let g:unite_source_file_mru_limit = 10
@@ -272,11 +272,11 @@ nmap <CR> :silent :nohlsearch<CR>
 noremap <Leader>ev y:call ExtractVariable()<cr>
 noremap <Leader>rv y:call RenameVariable()<cr>
 " Debug
-nnoremap <C-d> append(line('$'), 'qDebug() << '.'\"'.expand('%.:p').':'.(line('.')+1).'\";')
-nnoremap <C-j> append(line('$'), 'System.out.println(\"'.expand('%.:p').':'.(line('.')+1).'\");')
-nnoremap <s-j> append(line('$'), 'puts {'.expand('%.:p').':'.(line('.')+1).'}')
+nnoremap <C-d> :call append(line('.'), 'qDebug() << "'.expand('%.:p').':'.(line('.')+1).'";')<CR>
+nnoremap <C-j> :call append(line('.'), 'System.out.println("'.expand('%.:p').':'.(line('.')+1).'");')<CR>
+nnoremap <s-j> :call append(line('.'), 'puts {'.expand('%.:p').':'.(line('.')+1).'}')<CR>
 " Unite
-nmap <c-f> :Unite file_mru file_rec -start-insert -buffer-name='files'<CR>
+nmap <c-f> :Unite file_mru file_fixed -start-insert -buffer-name='files'<CR>
 nmap <c-h> :Unite history/yank<CR>
 nmap <c-b> :Unite buffer<CR>
 nmap <c-c> :w!:SyntasticReset<CR>:SyntasticCheck<CR>
@@ -294,4 +294,5 @@ ab qDebug qDebug() << ;<Del><Left>
 ab qdebug() qDebug() << ;<Del><Left>
 ab qDebug() qDebug() << ;<Del><Left>
 
-let g:unite_sources_ssh = "ssh ..."
+let g:unite_sources_ssh = "..."
+let g:unite_sources_files = "~/mercurial_files"
