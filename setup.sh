@@ -10,14 +10,18 @@ magenta='\E[35;40m'
 cyan='\E[36;40m'
 white='\E[37;40m'
 # Color Echo
+function EXT_COLOR ()
+{
+    echo -ne "\033[38;5;$1m";
+}
 function success()                                                                                                                                                           
 {
-    echo $'\e[32m'"$1"
+    echo "`EXT_COLOR 27`$1"
     tput sgr0
 }
 function error()                                                                                                                                                           
 {
-    echo $'\e[31m'"$1"
+    echo "`EXT_COLOR 124`$1"
     tput sgr0
 }
 # Detecting System
@@ -36,7 +40,7 @@ fi
 function update()
 {
     vim -c 'BundleInstall!'
-    tmp=`mktemp -u /tmp/tmp.XXXXX` && ruby -ne 'puts chomp'  ~/.vim/bundle/refactor/plugin/refactor.vim > $tmp && mv $tmp ~/.vim/bundle/refactor/plugin/refactor.vim
+    #tmp=`mktemp -u /tmp/tmp.XXXXX` && ruby -ne 'puts chomp'  ~/.vim/bundle/refactor/plugin/refactor.vim > $tmp && mv $tmp ~/.vim/bundle/refactor/plugin/refactor.vim
 }
 
 
