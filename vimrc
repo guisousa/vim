@@ -68,6 +68,8 @@ set iskeyword-=\_              "New delimiter
 let mapleader = ","            "Remapping leader key
 colorscheme solarized          "Using dark solarized
 "let g:solarized_termcolors=256 "If using default terminal colors, enable this option
+let g:solarized_visibility = "high"
+let g:solarized_contrast = "high"
 
 if exists("&cursorline")
     set cursorline             "destacar a linha do cursor
