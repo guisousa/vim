@@ -20,6 +20,7 @@ Bundle 'Shougo/unite.vim'
 Bundle 'scrooloose/syntastic'
 Bundle 'dbakker/vim-lint'
 Bundle 'guisousa/unite-sources'
+Bundle 'altercation/vim-colors-solarized'
 
 filetype plugin indent on
  
@@ -65,6 +66,8 @@ set iskeyword-=\(              "New delimiter
 set iskeyword-=\)              "New delimiter
 set iskeyword-=\_              "New delimiter
 let mapleader = ","            "Remapping leader key
+colorscheme solarized          "Using dark solarized
+"let g:solarized_termcolors=256 "If using default terminal colors, enable this option
 
 if exists("&cursorline")
     set cursorline             "destacar a linha do cursor
@@ -88,9 +91,9 @@ autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$")
                    \| exe "normal! g`\"" | endif
 
 " Syntax Highlighting
-autocmd Filetype cpp source  ~/.vim/cpp-colors.vim
-autocmd Filetype vim source  ~/.vim/vim-colors.vim
-autocmd Filetype java source ~/.vim/java-colors.vim
+"autocmd Filetype cpp source  ~/.vim/cpp-colors.vim
+"autocmd Filetype vim source  ~/.vim/vim-colors.vim
+"autocmd Filetype java source ~/.vim/java-colors.vim
 
 " Indentacao para arquivos haskell
 autocmd Filetype haskell set tabstop=2 softtabstop=2 shiftwidth=2 expandtab
