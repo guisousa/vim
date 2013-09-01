@@ -99,6 +99,9 @@ autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$")
 
 " Indentacao para arquivos haskell
 autocmd Filetype haskell set tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+
+" makefiles retain tabs (adding to your autocommand group)
+autocmd filetype make setlocal ts=4 sts=4 sw=4 noexpandtab)
 " END - Vim Configuration ------------------------------------------------------
 
 " Unite Configuration ----------------------------------------------------------
@@ -290,6 +293,42 @@ nnoremap <Leader>do :DiffOrig<cr>
 nnoremap <leader>dc :q<cr>:diffoff<cr>:exe ":" . g:diffline<cr>
 " Easy comments
 nnoremap <Leader>l :call CommentLine()<cr>
+
+" For Iterm2
+if &term=="xterm-256color"
+    map <Esc>Oq 1
+    map <Esc>Or 2
+    map <Esc>Os 3
+    map <Esc>Ot 4
+    map <Esc>Ou 5
+    map <Esc>Ov 6
+    map <Esc>Ow 7
+    map <Esc>Ox 8
+    map <Esc>Oy 9
+    map <Esc>Op 0
+    map <Esc>On .
+    map <Esc>OQ /
+    map <Esc>OR *
+    map <Esc>Ol +
+    map <Esc>OS -
+    map <Esc>OX =
+    map! <Esc>Oq 1
+    map! <Esc>Or 2
+    map! <Esc>Os 3
+    map! <Esc>Ot 4
+    map! <Esc>Ou 5
+    map! <Esc>Ov 6
+    map! <Esc>Ow 7
+    map! <Esc>Ox 8
+    map! <Esc>Oy 9
+    map! <Esc>Op 0
+    map! <Esc>On .
+    map! <Esc>OQ /
+    map! <Esc>OR *
+    map! <Esc>Ol +
+    map! <Esc>OS -
+    map! <Esc>OX =
+endif
 
 " Abreviations ----------------------------------------------------------------
 ab qdeb qDebug() << ;<Del><Left>
