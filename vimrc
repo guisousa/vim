@@ -17,6 +17,8 @@ Bundle 'nelstrom/vim-visual-star-search'
 Bundle 'tpope/vim-unimpaired'
 Bundle 'terryma/vim-multiple-cursors'
 Bundle 'Shougo/unite.vim'
+Bundle 'Shougo/unite-outline'
+Bundle 'Shougo/vimproc'
 Bundle 'scrooloose/syntastic'
 Bundle 'dbakker/vim-lint'
 Bundle 'guisousa/unite-sources'
@@ -248,6 +250,16 @@ function! CommentLine()
     endwhile
 endfunction
 
+function! ToggleMouseSupport()
+    let mouseSupport = getbufvar(1, "&mouse")
+	if mouseSupport == ""
+        let mouseSupport = "a"
+    else
+        let mouseSupport = ""
+    endif
+    exec "set mouse=" . mouseSupport
+endfunction
+
 "See differences from original file (resets if file is saved)
 command! DiffOrig let g:diffline = line('.') | vert new | set bt=nofile | r # | 0d_ | diffthis
               \ | wincmd p | diffthis | wincmd p
@@ -293,6 +305,8 @@ nnoremap <Leader>do :DiffOrig<cr>
 nnoremap <leader>dc :q<cr>:diffoff<cr>:exe ":" . g:diffline<cr>
 " Easy comments
 nnoremap <Leader>l :call CommentLine()<cr>
+" Mouse support
+nnoremap <c-m> :call ToggleMouseSupport()<CR>
 
 " For Iterm2
 if &term=="xterm-256color"
