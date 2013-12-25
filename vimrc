@@ -287,7 +287,7 @@ imap [ []<left>
 " Y fica similar a C e D
 nnoremap Y y$
 " Limpar buffer de busca com Enter
-nmap <CR> :silent :nohlsearch<CR>
+nmap <Leader>/ :silent :nohlsearch<CR>
 " Refactoring
 noremap <Leader>ev y:call ExtractVariable()<cr>
 noremap <Leader>rv y:call RenameVariable()<cr>
@@ -306,7 +306,7 @@ nnoremap <leader>dc :q<cr>:diffoff<cr>:exe ":" . g:diffline<cr>
 " Easy comments
 nnoremap <Leader>l :call CommentLine()<cr>
 " Mouse support
-nnoremap <c-m> :call ToggleMouseSupport()<CR>
+nnoremap <Leader>m :call ToggleMouseSupport()<CR>
 
 " For Iterm2
 if &term=="xterm-256color"
