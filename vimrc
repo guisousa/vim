@@ -19,10 +19,10 @@ Bundle 'terryma/vim-multiple-cursors'
 Bundle 'Shougo/unite.vim'
 Bundle 'Shougo/unite-outline'
 Bundle 'Shougo/vimproc'
-Bundle 'scrooloose/syntastic'
-Bundle 'dbakker/vim-lint'
 Bundle 'guisousa/unite-sources'
 Bundle 'altercation/vim-colors-solarized'
+Bundle 'kien/ctrlp.vim'
+Bundle 'Valloric/YouCompleteMe'
 
 filetype plugin indent on
  
@@ -50,7 +50,8 @@ set shiftwidth=4               "?
 set softtabstop=4              "tabulação de 4 espaços
 set tabstop=4                  "tabulacao de 4 espaços
 set cindent                    "C style indentation
-set t_Co=256                   "Use 16 colors
+set t_Co=256                   "Use 256 colors
+set ttyfast                    "terminal rapido
 set showcmd                    "mostrar comando excutado.Ex:dd
 set sidescroll=1               "Scroll caracter por caracter
 set title                      "seta o titulo do terminal/aba para o nome do arquivo sendo editado
@@ -99,11 +100,13 @@ autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$")
 "autocmd Filetype vim source  ~/.vim/vim-colors.vim
 "autocmd Filetype java source ~/.vim/java-colors.vim
 
+autocmd Filetype tcl set iskeyword+=\_
+
 " Indentacao para arquivos haskell
 autocmd Filetype haskell set tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 
 " makefiles retain tabs (adding to your autocommand group)
-autocmd filetype make setlocal ts=4 sts=4 sw=4 noexpandtab)
+autocmd filetype make setlocal ts=4 sts=4 sw=4 noexpandtab
 " END - Vim Configuration ------------------------------------------------------
 
 " Unite Configuration ----------------------------------------------------------
@@ -119,6 +122,19 @@ let g:unite_source_history_yank_enable = 1
 let g:unite_source_file_mru_limit = 10
 let g:unite_source_file_mru_long_limit = 100
 " END - Unite Configuration ---------------------------------------------------
+
+" ControlP Configuration ------------------------------------------------------
+let g:ctrlp_map = '<c-f>'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_use_caching = 1
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
+"unlet g:ctrlp_custom_ignore
+let g:ctrlp_custom_ignore = {
+\ 'dir':  '\v([\/]\.(git|hg|svn)$|dox\/|proofengine\/|external\/|COM\/|lib\/|frontend\/|Safelogic\/|bin\/|ap\/|common\/include\/)',
+\ 'file': '\v.(hs|.*ignore|m4|txt|defines|smv|vhd|py|db|png|xpm|vhdl|y|l|d|dll|lib|pdf|dsp|dsw|a|m|out|raw|standalone|tex|eps|.*sh|make|gif|cfg)$',
+\ }
+" END - ControlP Configuration ------------------------------------------------
 
 " Syntastic Configuration------------------------------------------------------
 let g:syntastic_mode_map = { 'mode': 'passive',
@@ -136,21 +152,21 @@ function! GetOposite()
         echo fname
    let other = ""
    if fnamemodify(fname, ":e") == "cpp"
-       let other = substitute(fname, ".cpp",".h", "")
+       let other = substitute(fname, ".cpp$",".h", "")
    endif
    if fnamemodify(fname, ":e") == "cc"
-       let other = substitute(fname, ".cc",".h", "")
+       let other = substitute(fname, ".cc$",".h", "")
    endif
    if fnamemodify(fname, ":e") == "h"
-       let other = substitute(fname, ".h",".cpp", "")
+       let other = substitute(fname, ".h$",".cpp", "")
        if filereadable(other)
            " Found!!!
        else
-           let other = substitute(fname, ".h",".cc", "")
+           let other = substitute(fname, ".h$",".cc", "")
        endif
    endif
    if fnamemodify(fname, ":e") == "rej"
-       let other = substitute(fname, ".rej","", "")
+       let other = substitute(fname, ".rej$","", "")
    endif
    return other
 endfunction
@@ -163,14 +179,6 @@ endfunction
 function! SplitOposite()
    let fname = GetOposite()
    exec("vsplit " . fname)
-endfunction
-
-function! SuperTab()
-    if (strpart(getline('.'),col('.')-2,1)=~'^\W\?$')
-        return "\<Tab>"
-    else
-        return "\<C-n>"
-    endif
 endfunction
 
 " Executar comandos do shell com :Shell e mostrar resultados em novo buffer
@@ -265,41 +273,35 @@ command! DiffOrig let g:diffline = line('.') | vert new | set bt=nofile | r # | 
               \ | wincmd p | diffthis | wincmd p
 " Mappings --------------------------------------------------------------------
 
+" Basic Mappings ---------
+
 " Simple navigation/control
 nmap ; :
 inoremap jj <Esc>
 nnoremap <Up> gk
 nnoremap <Down> gj
+" Y fica similar a C e D
+nnoremap Y y$
 " Selecionar bloco novamente depois de indentar
 xnoremap < <gv
 xnoremap > >gv
-" Auto Completion
-imap <Tab> <C-R>=SuperTab()<CR>
-" Opening oposite file
-nmap <s-t> :call TabeOposite()<CR>
-nmap <s-s> :call SplitOposite()<CR>
-" Paste with correct indentation
-nmap <C-p> "+p`]a
 " Fechamento automático de parênteses e afins"
 imap { {}<left>
 imap ( ()<left>
 imap [ []<left>
-" Y fica similar a C e D
-nnoremap Y y$
-" Limpar buffer de busca com Enter
-nmap <Leader>/ :silent :nohlsearch<CR>
+" Paste with correct indentation
+nmap <C-p> "+p`]a
+
+" Helper Mappings ---------
+
+" Opening oposite file
+nmap <Leader>t :call TabeOposite()<CR>
+nmap <Leader>s :call SplitOposite()<CR>
+" Limpar buffer de busca com ,/
+nnoremap <Leader>/ :silent :nohlsearch<CR>
 " Refactoring
 noremap <Leader>ev y:call ExtractVariable()<cr>
 noremap <Leader>rv y:call RenameVariable()<cr>
-" Debug
-nnoremap <C-d> :call append(line('.'), 'qDebug() << "'.expand('%.:p').':'.(line('.')+1).'";')<CR>
-nnoremap <C-j> :call append(line('.'), 'System.out.println("'.expand('%.:p').':'.(line('.')+1).'");')<CR>
-nnoremap <s-j> :call append(line('.'), 'puts {'.expand('%.:p').':'.(line('.')+1).'}')<CR>
-" Unite
-nmap <c-f> :Unite file_mru file_fixed -start-insert -buffer-name='files'<CR>
-nmap <c-h> :Unite history/yank<CR>
-nmap <c-b> :Unite buffer<CR>
-nmap <c-c> :w!:SyntasticReset<CR>:SyntasticCheck<CR>
 " Diff current file against last save
 nnoremap <Leader>do :DiffOrig<cr>
 nnoremap <leader>dc :q<cr>:diffoff<cr>:exe ":" . g:diffline<cr>
@@ -307,8 +309,12 @@ nnoremap <leader>dc :q<cr>:diffoff<cr>:exe ":" . g:diffline<cr>
 nnoremap <Leader>l :call CommentLine()<cr>
 " Mouse support
 nnoremap <Leader>m :call ToggleMouseSupport()<CR>
+" Debug
+nnoremap <C-d> :call append(line('.'), 'qDebug() << "'.expand('%.:p').':'.(line('.')+1).'";')<CR>
+nnoremap <C-j> :call append(line('.'), 'System.out.println("'.expand('%.:p').':'.(line('.')+1).'");')<CR>
+nnoremap <s-j> :call append(line('.'), 'puts {'.expand('%.:p').':'.(line('.')+1).'}')<CR>
 
-" For Iterm2
+" Fix for Iterm2
 if &term=="xterm-256color"
     map <Esc>Oq 1
     map <Esc>Or 2
@@ -344,6 +350,27 @@ if &term=="xterm-256color"
     map! <Esc>OX =
 endif
 
+" YouCompleteMe ---------------------------------------------------------------
+let g:ycm_confirm_extra_conf = 0
+let mapleader = "y"            "Remapping leader key
+:augroup YouCompleteMe
+:   autocmd!
+:   autocmd Filetype cpp nnoremap <Leader>d :YcmCompleter GoToDefinitionElseDeclaration<CR>
+:   autocmd Filetype cpp nnoremap <Leader><F5> :YcmForceCompileAndDiagnostics<CR>
+:augroup END
+" END - YouCompleteMe ---------------------------------------------------------
+" Unite
+:augroup Unite
+:   autocmd!
+:   let mapleader = "n"
+:   nnoremap <Leader>f :Unite file_mru file_fixed -start-insert -buffer-name='files'<CR>
+:   nnoremap <Leader>h :Unite history/yank<CR>
+:   nnoremap <Leader>b :Unite buffer<CR>
+:   nnoremap <Leader>c :w!:SyntasticReset<CR>:SyntasticCheck<CR>
+:   let g:unite_sources_ssh = "ssh ..."
+:   let g:unite_sources_files = "/Users/guisousa/mercurial_files"
+:augroup END
+
 " Abreviations ----------------------------------------------------------------
 ab qdeb qDebug() << ;<Del><Left>
 ab qDeb qDebug() << ;<Del><Left>
@@ -351,6 +378,3 @@ ab qdebug qDebug() << ;<Del><Left>
 ab qDebug qDebug() << ;<Del><Left>
 ab qdebug() qDebug() << ;<Del><Left>
 ab qDebug() qDebug() << ;<Del><Left>
-
-let g:unite_sources_ssh = "..."
-let g:unite_sources_files = "~/mercurial_files"
