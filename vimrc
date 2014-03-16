@@ -136,16 +136,6 @@ let g:ctrlp_custom_ignore = {
 \ }
 " END - ControlP Configuration ------------------------------------------------
 
-" Syntastic Configuration------------------------------------------------------
-let g:syntastic_mode_map = { 'mode': 'passive',
-                           \ 'active_filetypes': ['vim','sh','tcl','tex'],
-                           \ 'passive_filetypes': [] }
-let g:syntastic_cpp_check_header = 1
-let b:syntastic_cpp_cflags = ' -Icommon/include/util -Icommon/include/gui '   .
-                            \' -Icommon/include/license -Icommon/include/io ' .
-                            \'-I../../qt-include/Qt -I../../qt-include/QtGui'
-" END - Syntastic Configuration ------------------------------------------------
-
 " Functions -------------------------------------------------------------------
 function! GetOposite()
    let fname = expand("%")
@@ -366,7 +356,6 @@ let mapleader = "y"            "Remapping leader key
 :   nnoremap <Leader>f :Unite file_mru file_fixed -start-insert -buffer-name='files'<CR>
 :   nnoremap <Leader>h :Unite history/yank<CR>
 :   nnoremap <Leader>b :Unite buffer<CR>
-:   nnoremap <Leader>c :w!:SyntasticReset<CR>:SyntasticCheck<CR>
 :   let g:unite_sources_ssh = "ssh ..."
 :   let g:unite_sources_files = "/Users/guisousa/mercurial_files"
 :augroup END
