@@ -68,7 +68,7 @@ set iskeyword-=\.              "New delimiter
 set iskeyword-=\(              "New delimiter
 set iskeyword-=\)              "New delimiter
 set iskeyword-=\_              "New delimiter
-let mapleader = ","            "Remapping leader key
+let mapleader = "\<Space>"     "Remapping leader key
 colorscheme solarized          "Using dark solarized
 "let g:solarized_termcolors=256 "If using default terminal colors, enable this option
 let g:solarized_visibility = "high"
