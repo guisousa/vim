@@ -16,10 +16,10 @@ Bundle 'godlygeek/tabular'
 Bundle 'nelstrom/vim-visual-star-search'
 Bundle 'tpope/vim-unimpaired'
 Bundle 'terryma/vim-multiple-cursors'
-Bundle 'Shougo/unite.vim'
-Bundle 'Shougo/unite-outline'
-Bundle 'Shougo/vimproc'
-Bundle 'guisousa/unite-sources'
+"Bundle 'Shougo/vimproc'
+"Bundle 'Shougo/unite.vim'
+"Bundle 'Shougo/unite-outline'
+"Bundle 'guisousa/unite-sources'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'kien/ctrlp.vim'
 Bundle 'Valloric/YouCompleteMe'
@@ -81,16 +81,6 @@ if has("syntax") && (&t_Co > 2)
     syntax on
 endif
 
-if has("cscope")
-    "see more at http://cscope.sourceforge.net/cscope_maps.vim
-    set cscopetag "use cscope and ctags for ctrl-], :ta and vim -t
-    set csto=0     "try to use cscope first
-    set nocscopeverbose
-    let db = system("pwd|cut -d '/' --fields=1,2,3,4")."/cscope.out"
-    let db = substitute(db, "\n", "", "")
-    exec 'cs add '.db
-endif
-
 " Move to last position when reopening a file
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$")
                    \| exe "normal! g`\"" | endif
@@ -110,17 +100,17 @@ autocmd filetype make setlocal ts=4 sts=4 sw=4 noexpandtab
 " END - Vim Configuration ------------------------------------------------------
 
 " Unite Configuration ----------------------------------------------------------
-call unite#custom#source('buffer,file,file_mru,file_rec,file_fixed', 'matchers', 'matcher_fuzzy')
-call unite#custom#source('buffer,file,file_mru,file_rec,file_fixed', 'sorters', 'sorter_rank')
-call unite#custom#source('file_rec,file_fixed', 'ignore_pattern', 
-      \'\%(^\|/\)\.$\|\~$\|\.\%(o\|exe\|dll\|bak\|DS_Store\|zwc\|pyc\|sw[po]\|class\)$'.
-      \'\|\%(^\|/\)\%(\.hg\|\.git\|\.bzr\|\.svn\|tags\%(-.*\)\?\)\%($\|/\)'.
-      \'\|\.orig\|\.rej')
-call unite#custom#default_action('file,file_rec,file_mru,file_fixed', 'tabopen')
-call unite#custom#default_action('buffer', 'goto')
-let g:unite_source_history_yank_enable = 1
-let g:unite_source_file_mru_limit = 10
-let g:unite_source_file_mru_long_limit = 100
+"call unite#custom#source('buffer,file,file_mru,file_rec,file_fixed', 'matchers', 'matcher_fuzzy')
+"call unite#custom#source('buffer,file,file_mru,file_rec,file_fixed', 'sorters', 'sorter_rank')
+"call unite#custom#source('file_rec,file_fixed', 'ignore_pattern', 
+"      \'\%(^\|/\)\.$\|\~$\|\.\%(o\|exe\|dll\|bak\|DS_Store\|zwc\|pyc\|sw[po]\|class\)$'.
+"      \'\|\%(^\|/\)\%(\.hg\|\.git\|\.bzr\|\.svn\|tags\%(-.*\)\?\)\%($\|/\)'.
+"      \'\|\.orig\|\.rej')
+"call unite#custom#default_action('file,file_rec,file_mru,file_fixed', 'tabopen')
+"call unite#custom#default_action('buffer', 'goto')
+"let g:unite_source_history_yank_enable = 1
+"let g:unite_source_file_mru_limit = 10
+"let g:unite_source_file_mru_long_limit = 100
 " END - Unite Configuration ---------------------------------------------------
 
 " ControlP Configuration ------------------------------------------------------
