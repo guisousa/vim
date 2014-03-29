@@ -340,15 +340,15 @@ let mapleader = "y"            "Remapping leader key
 :augroup END
 " END - YouCompleteMe ---------------------------------------------------------
 " Unite
-:augroup Unite
-:   autocmd!
-:   let mapleader = "n"
-:   nnoremap <Leader>f :Unite file_mru file_fixed -start-insert -buffer-name='files'<CR>
-:   nnoremap <Leader>h :Unite history/yank<CR>
-:   nnoremap <Leader>b :Unite buffer<CR>
-:   let g:unite_sources_ssh = "ssh ..."
-:   let g:unite_sources_files = "/Users/guisousa/mercurial_files"
-:augroup END
+":augroup Unite
+":   autocmd!
+":   let mapleader = "n"
+":   nnoremap <Leader>f :Unite file_mru file_fixed -start-insert -buffer-name='files'<CR>
+":   nnoremap <Leader>h :Unite history/yank<CR>
+":   nnoremap <Leader>b :Unite buffer<CR>
+":   let g:unite_sources_ssh = "ssh ..."
+":   let g:unite_sources_files = "/Users/guisousa/mercurial_files"
+":augroup END
 
 " Abreviations ----------------------------------------------------------------
 ab qdeb qDebug() << ;<Del><Left>
