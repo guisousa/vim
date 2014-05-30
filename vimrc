@@ -69,10 +69,10 @@ set iskeyword-=\(              "New delimiter
 set iskeyword-=\)              "New delimiter
 set iskeyword-=\_              "New delimiter
 let mapleader = "\<Space>"     "Remapping leader key
-colorscheme solarized          "Using dark solarized
+"colorscheme solarized          "Using dark solarized
 "let g:solarized_termcolors=256 "If using default terminal colors, enable this option
-let g:solarized_visibility = "high"
-let g:solarized_contrast = "high"
+"let g:solarized_visibility = "high"
+"let g:solarized_contrast = "high"
 
 if exists("&cursorline")
     set cursorline             "destacar a linha do cursor
@@ -289,10 +289,21 @@ nnoremap <leader>dc :q<cr>:diffoff<cr>:exe ":" . g:diffline<cr>
 nnoremap <Leader>l :call CommentLine()<cr>
 " Mouse support
 nnoremap <Leader>m :call ToggleMouseSupport()<CR>
+" Search for selected text, forwards or backwards.
+vnoremap <silent> * :<C-U>
+            \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
+            \gvy/<C-R><C-R>=substitute(
+            \escape(@", '/\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
+            \gV:call setreg('"', old_reg, old_regtype)<CR>
+vnoremap <silent> # :<C-U>
+            \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
+            \gvy?<C-R><C-R>=substitute(
+            \escape(@", '?\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
+            \gV:call setreg('"', old_reg, old_regtype)<CR>
 " Debug
-nnoremap <C-d> :call append(line('.'), 'qDebug() << "'.expand('%.:p').':'.(line('.')+1).'";')<CR>
-nnoremap <C-j> :call append(line('.'), 'System.out.println("'.expand('%.:p').':'.(line('.')+1).'");')<CR>
-nnoremap <s-j> :call append(line('.'), 'puts {'.expand('%.:p').':'.(line('.')+1).'}')<CR>
+autocmd Filetype cpp  nnoremap <C-d> :call append(line('.'), 'qDebug() << "'.expand('%.:p').':'.(line('.')+1).'";')<CR>
+autocmd Filetype java nnoremap <C-d> :call append(line('.'), 'System.out.println("'.expand('%.:p').':'.(line('.')+1).'");')<CR>
+autocmd Filetype tcl  nnoremap <C-d> :call append(line('.'), 'puts {'.expand('%.:p').':'.(line('.')+1).'}')<CR>
 
 " Fix for Iterm2
 if &term=="xterm-256color"
