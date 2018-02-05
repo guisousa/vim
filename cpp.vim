@@ -1,6 +1,8 @@
 syn keyword cppCustomQtTypes   QList QString QVector QMap QStringList QStack
 syn keyword cppCustomQtDebug   qDebug
-syn keyword cppCustomRepeat    foreach
+syn keyword cppCustomQtRepeat  foreach
+syn keyword cppCustomQtKeyword  qDeleteAll
+syn match cppCustomQtUnderlined "\(const\|static\|dynamic\|reinterpret\)_cast"
 
 syn match   cppCustomOp           "\(+\|-\|\*\|\/\(\/\|\*\)\@!\||\|?\|:\|=\|&\|!\|>\|<\)" contains=cppCustomScope
 syn match   cppCustomOp2          "\((\|)\|\.\|->\|,\)" contains=cppCustomScope
@@ -18,7 +20,9 @@ syn match   cppCustomGlobal       "m_\w\+"
 "hi def link cppCustomFunc       Function
 hi def link cppCustomClassFunc  Function
 hi def link cppCustomQtTypes    Type
-hi def link cppCustomRepeat     Repeat
+hi def link cppCustomQtRepeat   Repeat
+hi def link cppCustomQtKeyword   Keyword
+hi def link cppCustomQtUnderlined   Underlined
 
 " Custom syntax definitions
 hi def link cppCustomClass         CppClassNamespace
@@ -33,3 +37,4 @@ hi CppGlobal         ctermfg=250
 hi CppOp             ctermfg=178
 hi CppOp2            ctermfg=241
 hi CppClassNamespace ctermfg=99
+
